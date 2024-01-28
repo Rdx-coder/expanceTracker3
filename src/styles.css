@@ -1,0 +1,8 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  min-height: 100vh; /* Ensure the content fills the viewport height */
+  display: flex; /* Center align the content */
+  justify-content: center; /* Center align the content horizontally */
+  align-items: center; /* Center align the content vertically */
+}
