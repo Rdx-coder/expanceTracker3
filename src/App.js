@@ -4,40 +4,35 @@ import ExpenseInfo from "./components/ExpenseInfo/ExpenseInfo";
 import ExpenseList from "./components/ExpenseList/ExpenseList";
 import "./App.css";
 
-// Define reducer function
+// Initial state for expenses
+const initialState = [];
+
+// Reducer function to handle state updates
 const expensesReducer = (state, action) => {
   switch (action.type) {
     case "ADD_EXPENSE":
       return [...state, action.payload];
     case "DELETE_EXPENSE":
-      return state.filter((expense, index) => index !== action.payload);
+      return state.filter((expense) => expense.id !== action.payload);
     default:
       return state;
   }
 };
 
 function App() {
-  // Initialize state using useReducer hook
-  const [expenses, dispatch] = useReducer(expensesReducer, []);
-
-  // Function to add a new transaction
-  const addExpense = (expense) => {
-    dispatch({ type: "ADD_EXPENSE", payload: expense });
-  };
-
-  // Function to delete a transaction
-  const deleteExpense = (index) => {
-    dispatch({ type: "DELETE_EXPENSE", payload: index });
-  };
+  // Use useReducer hook to manage state
+  const [expenses, dispatch] = useReducer(expensesReducer, initialState);
 
   return (
     <>
       <h2 className="mainHeading">Expense Tracker</h2>
       <div className="App">
-        <ExpenseForm addExpense={addExpense} dispatch={dispatch} />
+        {/* Pass dispatch function to ExpenseForm to handle adding expenses */}
+        <ExpenseForm addExpense={(expense) => dispatch({ type: "ADD_EXPENSE", payload: expense })} />
         <div className="expenseContainer">
           <ExpenseInfo expenses={expenses} />
-          <ExpenseList expenses={expenses} deleteExpense={deleteExpense} />
+          {/* Pass dispatch function to ExpenseList to handle deleting expenses */}
+          <ExpenseList expenses={expenses} deleteExpense={(id) => dispatch({ type: "DELETE_EXPENSE", payload: id })} />
         </div>
       </div>
     </>

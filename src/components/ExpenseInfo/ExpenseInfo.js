@@ -2,19 +2,17 @@ import React from "react";
 import styles from "./ExpenseInfo.module.css";
 
 const ExpenseInfo = ({ expenses }) => {
-  const { profitAmount, lossAmount, grandTotal } = expenses.reduce(
-    (accumulator, currentExpense) => {
-      const currentExpenseAmount = parseFloat(currentExpense.amount);
-      if (currentExpenseAmount < 0) {
-        accumulator.lossAmount += currentExpenseAmount;
-      } else {
-        accumulator.profitAmount += currentExpenseAmount;
-      }
-      accumulator.grandTotal += currentExpenseAmount;
-      return accumulator;
-    },
-    { profitAmount: 0, lossAmount: 0, grandTotal: 0 }
-  );
+  let profitAmount = 0;
+  let lossAmount = 0;
+  const grandTotal = expenses.reduce((acc, currentExpense) => {
+    const currentExpenseAmount = parseFloat(currentExpense.amount); // Parse amount as float
+    if (currentExpenseAmount < 0) {
+      lossAmount += currentExpenseAmount;
+    } else {
+      profitAmount += currentExpenseAmount;
+    }
+    return currentExpenseAmount + acc;
+  }, 0);
 
   return (
     <div className={styles.expenseInfoContainer}>
@@ -26,13 +24,13 @@ const ExpenseInfo = ({ expenses }) => {
         <div>
           <h4>Income</h4>
           <p id="money-plus" className={`${styles.money} ${styles.plus}`}>
-            +${profitAmount.toFixed(2)}
+            +${profitAmount.toFixed(2)} {/* Fix decimal places */}
           </p>
         </div>
         <div>
           <h4>Expense</h4>
           <p id="money-minus" className={`${styles.money} ${styles.minus}`}>
-            -${Math.abs(lossAmount).toFixed(2)}
+            -${Math.abs(lossAmount).toFixed(2)} {/* Fix decimal places and convert to positive */}
           </p>
         </div>
       </div>

@@ -1,26 +1,30 @@
 import React, { useRef } from "react";
 import styles from "./ExpenseForm.module.css";
 
-const ExpenseForm = ({ dispatch }) => {
+const ExpenseForm = ({ addExpense }) => {
   const expenseTextInput = useRef();
   const expenseAmountInput = useRef();
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const expenseText = expenseTextInput.current.value;
-    const expenseAmount = expenseAmountInput.current.value;
-    if (parseFloat(expenseAmount) === 0) {
+    const expenseAmount = parseFloat(expenseAmountInput.current.value);
+
+    // If amount is 0, return
+    if (expenseAmount === 0 || isNaN(expenseAmount)) {
       return;
     }
 
     const newExpense = {
       text: expenseText,
-      amount: parseFloat(expenseAmount), // Parse amount to float
-      id: new Date().getTime()
+      amount: expenseAmount,
+      id: Date.now()
     };
 
-    dispatch({ type: "ADD_EXPENSE", payload: newExpense }); // Dispatch action to add expense
+    // Dispatch action to add expense
+    addExpense(newExpense);
 
+    // Clear input fields
     clearInput();
   };
 
@@ -53,7 +57,7 @@ const ExpenseForm = ({ dispatch }) => {
         ref={expenseAmountInput}
         required
       />
-      <button className={styles.submitBtn} type="submit">Add Transaction</button>
+      <button className={styles.submitBtn}>Add Transaction</button>
     </form>
   );
 };
