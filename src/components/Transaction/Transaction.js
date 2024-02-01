@@ -3,8 +3,9 @@ import styles from "./Transaction.module.css";
 import EditImage from "../../images/edit.png";
 import DeleteImage from "../../images/trash-bin.png";
 
-const Transaction = ({ expense, deleteExpense, index }) => {
+const Transaction = ({ expense, deleteExpense }) => {
   const [currentHoverIndex, setCurrentHoverIndex] = useState(null);
+
   return (
     <li
       key={expense.id}
@@ -12,7 +13,7 @@ const Transaction = ({ expense, deleteExpense, index }) => {
         expense.amount > 0 ? styles.profit : styles.loss
       }`}
       onMouseOver={() => {
-        setCurrentHoverIndex(index);
+        setCurrentHoverIndex(expense.id);
       }}
       onMouseLeave={() => {
         setCurrentHoverIndex(null);
@@ -22,14 +23,14 @@ const Transaction = ({ expense, deleteExpense, index }) => {
       <div className={styles.transactionOptions}>
         <div
           className={`${styles.amount} ${
-            currentHoverIndex === index && styles.movePrice
+            currentHoverIndex === expense.id && styles.movePrice
           }`}
         >
           ${expense.amount}
         </div>
         <div
           className={`${styles.btnContainer} ${
-            currentHoverIndex === index && styles.active
+            currentHoverIndex === expense.id && styles.active
           }`}
         >
           <div className={styles.edit} onClick={() => {}}>
